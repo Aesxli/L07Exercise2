@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2</title>
+
+    <style>
+        #displayInfo {
+            display: none;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            border: 1px solid #ccc;
+            color: white; /* Set text color to white */
+            background-color: green; /* Set background color to green */
+            margin-top: 10px; /* Add some space between the form and the displayed data */
+        }
+    </style>
+
+    <!-- Include jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+    <form id="myForm">
+        <!-- Two text fields - Name and Email -->
+        <input id="name" type="text" placeholder="Name" value=""><br><br>
+        <input id="email" type="email" placeholder="Email" value=""><br><br>
+        <!-- Two radio buttons for Gender - Male and Female -->
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label><br><br>
+        <!-- Submit button -->
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Display form data with jQuery fadeIn effect -->
+    <div id="displayInfo"></div>
+
+    <script>
+        $(document).ready(function() {
+            var displayInfoElement = $("#displayInfo");
+            var isMouseOver = false; // Flag to track mouse over the displayed data
+
+            $("#myForm").submit(function(event) {
+                event.preventDefault(); // Prevents the default form submission behavior
+
+                // Get form values
+                var name = $("#name").val();
+                var email = $("#email").val();
+                var gender = $('input[name="gender"]:checked').val();
+
+                // Display form data with fade-in effect
+                if (name && email && gender) {
+                    // Set font, border, text color, and background using jQuery CSS methods
+                    displayInfoElement.html("Name: " + name + "<br>Email: " + email + "<br>Gender: " + gender)
+                        .css({
+                            'font-family': 'Arial, sans-serif',
+                            'border': '1px solid #ccc',
+                            'color': 'white',
+                            'background-color': 'green'
+                        })
+                        .fadeIn(); // Apply fade-in effect
+                } else {
+                    displayInfoElement.html("Please fill in all fields");
+                    displayInfoElement.fadeOut(); // Hide the element
+                }
+            });
+
+            // Slide up the form data only when the mouse is hovering over it
+            displayInfoElement.mouseenter(function() {
+                isMouseOver = true;
+                $(this).slideUp();
+            });
+
+            // Slide down the form data when the mouse leaves the displayed data
+            displayInfoElement.mouseleave(function() {
+                isMouseOver = false;
+                $(this).slideDown();
+            });
+
+            // Ensure the form data stays slid up if the mouse is still hovering over it
+            setInterval(function() {
+                if (!isMouseOver && displayInfoElement.is(":visible")) {
+                    displayInfoElement.slideDown();
+                }
+            }, 500); // Adjust the interval as needed
+        });
+    </script>
+</body>
+
+</html>
+
